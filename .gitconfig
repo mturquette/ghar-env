@@ -1,0 +1,7 @@
+[user]
+	email = mturquette@deferred.io
+	name = Michael Turquette
+[color]
+	ui = auto
+[core]
+	editor = vim -c \"set textwidth=72\" -c \"set wrap\" -c \"set spell\" -c \"set nocp\"
