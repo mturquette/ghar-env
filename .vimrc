@@ -69,8 +69,66 @@ set noantialias
 " used for setting tabstop from comments lines
 set modeline
 
-set term=xterm
+"set term=xterm
 
 "source /usr/local/lib/python2.7/site-packages/powerline/bindings/vim/plugin/powerline.vim
 source ~/.local/lib/python3.4/site-packages/powerline/bindings/vim/plugin/powerline.vim
 set laststatus=2
+
+" notmuch-ruby-vim bindings
+let g:notmuch_custom_search_maps = {
+	\ 'u':		'kill_this_buffer()',
+	\ 'e':		'search_tag("-inbox")',
+	\ 'I':		'search_tag("-unread")',
+	\ 's':		'search_tag("+flagged")',
+	\ 'S':		'search_tag("-flagged")',
+	\ 'o':		'search_search_prompt()',
+	\ '<Space>':	'search_show_thread(3)',
+	\ }
+
+" redundant
+"	\ '<Enter>':	'search_show_thread(1)',
+"	\ '<Space>':	'search_show_thread(2)',
+"	\ 't':		'search_tag("")',
+"	\ '=':		'search_refresh()',
+"	\ '?':		'search_info()',
+"	\ 'c':		'compose()',
+
+let g:notmuch_custom_show_maps = {
+	\ 'u':		'kill_this_buffer()',
+	\ 'e':		'show_tag("-inbox")',
+	\ 'I':		'show_tag("-unread")',
+	\ 's':		'show_tag("+flagged")',
+	\ 'S':		'show_tag("-flagged")',
+	\ 't':		'show_tag("")',
+	\ 'o':		'show_open_msg()',
+	\ }
+
+" redundant
+"	\ 'e':		'show_extract_msg()',
+"	\ 'd':		'show_save_msg()',
+"	\ 'p':		'show_save_patches()',
+"	\ 'r':		'show_reply()',
+"	\ '?':		'show_info()',
+"	\ '<Tab>':	'show_next_msg()',
+"	\ 'c':		'compose()',
+
+let g:notmuch_folders = [
+	\ [ 'new', 'tag:inbox and (tag:unread or tag:flagged)' ],
+	\ [ 'flagged', 'tag:flagged' ],
+	\ [ 'linux-clk', 'tag:linux-clk and tag:unread' ],
+	\ [ 'linux-clk', 'tag:linux-clk and (tag:unread or tag:flagged)' ],
+	\ [ 'drafts', 'tag:drafts' ],
+	\ [ 'spam', 'tag:spam' ],
+	\ [ 'inbox', 'tag:inbox' ],
+	\ [ 'unread', 'tag:unread' ],
+	\ ]
+
+"let g:notmuch_rb_sendmail = '/usr/bin/msmtp -a baylibre -t -X ""  < ' . fname
+let g:notmuch_sendmail = '/usr/bin/msmtp'
+
+"let g:notmuch_folders_count_threads = 1
+let g:notmuch_reader = 'mutt -f %s'
+
+let g:notmuch_date_format = '%y-%m-%d'
+let g:notmuch_datetime_format = '%y-%m-%d %H:%M'
