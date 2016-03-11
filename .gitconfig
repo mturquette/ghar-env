@@ -5,3 +5,10 @@
 	ui = auto
 [core]
 	editor = vim -c \"set textwidth=72\" -c \"set wrap\" -c \"set spell\" -c \"set nocp\"
+	abbrev = 12
+[push]
+	default = simple
+[sendemail]
+	smtpserver = /usr/bin/msmtp
+[pretty]
+	fixes = Fixes: %h (\"%s\")
