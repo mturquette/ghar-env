@@ -10,5 +10,8 @@
 	default = simple
 [sendemail]
 	smtpserver = /usr/bin/msmtp
+	suppresscc = all
 [pretty]
 	fixes = Fixes: %h (\"%s\")
+[rebase]
+	autosquash = true
