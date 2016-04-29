@@ -110,7 +110,7 @@ end
 
 # alot: apply patches to Linux
 function alot
-	cd ~/src/linux ; /usr/bin/alot
+	cd ~/src/linux ; ~/.local/bin/alot
 end
 
 # mutt: Save attachments to Dropbox
