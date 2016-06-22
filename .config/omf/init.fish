@@ -143,15 +143,76 @@ end
 function m
 	# nr_jobs = nr_cpus * 2
 	set nr_jobs (math "2 *" (grep -c "^processor" /proc/cpuinfo))
-	make -j$nr_jobs
+	make -j$nr_jobs $argv
 end
 
 # use m alias above, and save STDERR to errors.err log
 function m2
-	m 2> errors.err
+	m $argv 2> errors.err
+end
+
+function c
+	cp arch/$ARCH/boot/*Image arch/$ARCH/boot/dts/"$vendor"/*.dtb /srv/tftp/$ARCH
+	sync
+end
+
+#function m3
+#	set -l nr_jobs (math "2 *" (grep -c "^processor" /proc/cpuinfo))
+#	if make -j$nr_jobs $argv 2> errors.err
+#		mkimage -A $ARCH -O linux -C none -T kernel -a $LOADADDR -e $LOADADDR -d arch/$ARCH/boot/Image arch/$ARCH/boot/uImage
+#		c
+#	else
+#		echo "exit code $status"
+#		less errors.err
+#	end
+#end
+
+function m3
+	set -l nr_jobs (math "2 *" (grep -c "^processor" /proc/cpuinfo))
+	if make -j$nr_jobs $argv 2> errors.err
+		mkimage -A $ARCH -O linux -C none -T kernel -a $LOADADDR -e $LOADADDR -d arch/$ARCH/boot/Image arch/$ARCH/boot/uImage
+		c
+	end
+	# display warnings & errors sent to STDERR, if any
+	if test -s errors.err
+		less errors.err
+	end
 end
 
 ## exports
 
 # ccache
 export CCACHE_DIR=$HOME/.cache/ccache
+
+# linux armv7, amlogic S805 kernel hacking
+#export ARCH=arm
+#export CROSS_COMPILE="ccache /home/mturquette/tc/gcc-linaro-5.2-2015.11-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-"
+#export LOADADDR=0x00208000
+
+# linux armv8, amlogic S905 kernel hacking
+#export ARCH=arm64
+#export CROSS_COMPILE="ccache /home/mturquette/tc/gcc-linaro-5.3-2016.02-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+#export LOADADDR=0x01080000
+
+# per-board environments
+
+function env.meson8b
+	set -gx ARCH arm
+	set -gx CROSS_COMPILE "ccache /home/mturquette/tc/gcc-linaro-5.2-2015.11-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-"
+	set -gx LOADADDR 0x00208000
+	set -e vendor
+end
+
+function env.gxbb
+	set -gx ARCH arm64
+	set -gx CROSS_COMPILE "ccache /home/mturquette/tc/gcc-linaro-5.3-2016.02-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+	set -gx LOADADDR 0x01080000
+	set -gx vendor amlogic
+end
+
+function env.clear
+	set -e ARCH
+	set -e CROSS_COMPILE
+	set -e LOADADDR
+	set -e vendor
+end
