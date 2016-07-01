@@ -1,11 +1,6 @@
 set fish_greeting ""
 powerline-daemon
 
-#if status --is-interactive
-#	#keychain --eval --clear
-#	keychain --eval --quiet -Q id_rsa C325A4D4
-#end
-
 # kick ssh & gpg agents
 if status --is-interactive
 	#keychain --clear
@@ -20,35 +15,6 @@ if status --is-interactive
 	#eval (keychain --eval --quiet id_rsa korg-mturquette C325A4D4 84174131)
 	#ssh-add ~/.ssh/korg-mturquette
 end
-
-function notmuchfs_mount
-	# mount notmuchfs if not mounted already
-	if not mount | grep notmuchfs 1> /dev/null
-		echo "Mounting notmuchfs"
-		notmuchfs /home/mturquette/mail/.notmuch/notmuchfs \
-			-o backing_dir=/home/mturquette/mail/.notmuch/notmuchfs-backing-store \
-			-o mail_dir=/home/mturquette/mail \
-			-o mutt_2476_workaround
-	end
-end
-
-function notmuchfs_mount_debug
-	# mount notmuchfs if not mounted already
-	if not mount | grep notmuchfs 1> /dev/null
-		echo "Mounting notmuchfs"
-		notmuchfs -d /home/mturquette/mail/.notmuch/notmuchfs \
-			-o backing_dir=/home/mturquette/mail/.notmuch/notmuchfs-backing-store \
-			-o mail_dir=/home/mturquette/mail \
-			-o mutt_2476_workaround
-	end
-end
-
-function notmuchfs_unmount
-	fusermount -u ~/mail/.notmuch/notmuchfs
-end
-
-## always try to mount
-#notmuchfs_mount
 
 ## git functions
 
@@ -113,15 +79,6 @@ function alot
 	cd ~/src/linux ; ~/.local/bin/alot
 end
 
-# mutt: Save attachments to Dropbox
-function mutt
-	cd ~/Dropbox/Downloads ; /usr/bin/mutt
-end
-
-function vnm
-	vim -c ':NotMuch'
-end
-
 # mvim for writing
 function mvw
 	mvim -c "set textwidth=72" -c "set wrap" -c "set spell" -c "set nocp" $argv
@@ -152,20 +109,9 @@ function m2
 end
 
 function c
-	cp arch/$ARCH/boot/*Image arch/$ARCH/boot/dts/"$vendor"/*.dtb /srv/tftp/$ARCH
+	scp arch/$ARCH/boot/*Image arch/$ARCH/boot/dts/"$vendor"/*.dtb sh.deferred.io:/srv/tftp/$ARCH
 	sync
 end
-
-#function m3
-#	set -l nr_jobs (math "2 *" (grep -c "^processor" /proc/cpuinfo))
-#	if make -j$nr_jobs $argv 2> errors.err
-#		mkimage -A $ARCH -O linux -C none -T kernel -a $LOADADDR -e $LOADADDR -d arch/$ARCH/boot/Image arch/$ARCH/boot/uImage
-#		c
-#	else
-#		echo "exit code $status"
-#		less errors.err
-#	end
-#end
 
 function m3
 	set -l nr_jobs (math "2 *" (grep -c "^processor" /proc/cpuinfo))
@@ -183,16 +129,6 @@ end
 
 # ccache
 export CCACHE_DIR=$HOME/.cache/ccache
-
-# linux armv7, amlogic S805 kernel hacking
-#export ARCH=arm
-#export CROSS_COMPILE="ccache /home/mturquette/tc/gcc-linaro-5.2-2015.11-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-"
-#export LOADADDR=0x00208000
-
-# linux armv8, amlogic S905 kernel hacking
-#export ARCH=arm64
-#export CROSS_COMPILE="ccache /home/mturquette/tc/gcc-linaro-5.3-2016.02-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-"
-#export LOADADDR=0x01080000
 
 # per-board environments
 
