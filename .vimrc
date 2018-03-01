@@ -50,7 +50,8 @@ set hidden             " Hide buffers when they are abandoned
 syntax on
 syntax enable
 if has('gui_running')
-	set background=light
+	set background=dark
+	"set background=light
 	set tw=72
 	set ai
 	set lbr
@@ -59,8 +60,7 @@ if has('gui_running')
 else
 	set background=dark
 endif
-"set background=light
-set guifont=Ubuntu\ Mono:h18
+set guifont=Ubuntu\ Mono\ derivative\ Powerline:h18
 set t_Co=16
 let g:solarized_termcolors=16
 colorscheme solarized
@@ -71,64 +71,52 @@ set modeline
 
 "set term=xterm
 
-"source /usr/local/lib/python2.7/site-packages/powerline/bindings/vim/plugin/powerline.vim
-source ~/.local/lib/python3.4/site-packages/powerline/bindings/vim/plugin/powerline.vim
+source /usr/local/lib/python2.7/site-packages/powerline/bindings/vim/plugin/powerline.vim
+"source ~/.local/lib/python3.4/site-packages/powerline/bindings/vim/plugin/powerline.vim
 set laststatus=2
 
-" notmuch-ruby-vim bindings
-let g:notmuch_custom_search_maps = {
-	\ 'u':		'kill_this_buffer()',
-	\ 'e':		'search_tag("-inbox")',
-	\ 'I':		'search_tag("-unread")',
-	\ 's':		'search_tag("+flagged")',
-	\ 'S':		'search_tag("-flagged")',
-	\ 'o':		'search_search_prompt()',
-	\ '<Space>':	'search_show_thread(3)',
-	\ }
+set nocompatible
+set backspace=indent,eol,start
 
-" redundant
-"	\ '<Enter>':	'search_show_thread(1)',
-"	\ '<Space>':	'search_show_thread(2)',
-"	\ 't':		'search_tag("")',
-"	\ '=':		'search_refresh()',
-"	\ '?':		'search_info()',
-"	\ 'c':		'compose()',
+call plug#begin('~/.vim/plugged')
 
-let g:notmuch_custom_show_maps = {
-	\ 'u':		'kill_this_buffer()',
-	\ 'e':		'show_tag("-inbox")',
-	\ 'I':		'show_tag("-unread")',
-	\ 's':		'show_tag("+flagged")',
-	\ 'S':		'show_tag("-flagged")',
-	\ 't':		'show_tag("")',
-	\ 'o':		'show_open_msg()',
-	\ }
+" Make sure you use single quotes
 
-" redundant
-"	\ 'e':		'show_extract_msg()',
-"	\ 'd':		'show_save_msg()',
-"	\ 'p':		'show_save_patches()',
-"	\ 'r':		'show_reply()',
-"	\ '?':		'show_info()',
-"	\ '<Tab>':	'show_next_msg()',
-"	\ 'c':		'compose()',
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+"Plug 'junegunn/vim-easy-align'
 
-let g:notmuch_folders = [
-	\ [ 'new', 'tag:inbox and (tag:unread or tag:flagged)' ],
-	\ [ 'flagged', 'tag:flagged' ],
-	\ [ 'linux-clk', 'tag:linux-clk and tag:unread' ],
-	\ [ 'linux-clk', 'tag:linux-clk and (tag:unread or tag:flagged)' ],
-	\ [ 'drafts', 'tag:drafts' ],
-	\ [ 'spam', 'tag:spam' ],
-	\ [ 'inbox', 'tag:inbox' ],
-	\ [ 'unread', 'tag:unread' ],
-	\ ]
+" Any valid git URL is allowed
+"Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 
-"let g:notmuch_rb_sendmail = '/usr/bin/msmtp -a baylibre -t -X ""  < ' . fname
-let g:notmuch_sendmail = '/usr/bin/msmtp'
+" Group dependencies, vim-snippets depends on ultisnips
+"Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
-"let g:notmuch_folders_count_threads = 1
-let g:notmuch_reader = 'mutt -f %s'
+" On-demand loading
+"Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+"Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 
-let g:notmuch_date_format = '%y-%m-%d'
-let g:notmuch_datetime_format = '%y-%m-%d %H:%M'
+" Using a non-master branch
+"Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+
+" Plugin options
+"Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
+
+" Plugin outside ~/.vim/plugged with post-update hook
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+" Unmanaged plugin (manually installed and updated)
+"Plug '~/my-prototype-plugin'
+
+" org-mode plugins
+Plug 'jceb/vim-orgmode'
+Plug 'tpope/vim-speeddating'
+Plug 'itchyny/calendar.vim'
+Plug 'SyntaxRange'
+Plug 'utl.vim'
+Plug 'tpope/vim-repeat'
+Plug 'taglist.vim'
+Plug 'majutsushi/tagbar'
+Plug 'chrisbra/nrrwrgn'
+
+" Add plugins to &runtimepath
+call plug#end()

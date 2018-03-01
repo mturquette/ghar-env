@@ -1,20 +1,14 @@
 set fish_greeting ""
 powerline-daemon
 
-# kick ssh & gpg agents
-if status --is-interactive
-	#keychain --clear
-	set -l IFS # this temporarily clears IFS, which disables the newline-splitting
-	#eval (keychain --eval --quiet)
-	eval (keychain --eval 84174131 C325A4D4 id_rsa korg-mturquette)
-	#keychain 84174131 C325A4D4 id_rsa korg-mturquette
+## path
+set -gx PATH $HOME/.local/bin $PATH $HOME/src/ghar/bin
 
-	#eval (keychain --eval --quiet korg-mturquette 84174131)
-	# FIXME: use --noask here potentially?
-	#eval (keychain --eval --quiet id_rsa C325A4D4)
-	#eval (keychain --eval --quiet id_rsa korg-mturquette C325A4D4 84174131)
-	#ssh-add ~/.ssh/korg-mturquette
-end
+## GPG and SSH agent configuration
+
+#gpg-connect-agent /bye
+export SSH_AUTH_SOCK=(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
 
 ## git functions
 
@@ -72,29 +66,39 @@ function gmsg --description 'append Link: msgid to git commit'
 	git filter-branch -f --msg-filter "cat && echo Link: lkml.kernel.org/r/$msgid" HEAD^..HEAD
 end
 
-## application functions
+## aliases
 
 # alot: apply patches to Linux
 function alot
-	cd ~/src/linux ; ~/.local/bin/alot
+	cd ~/src/linux ; /usr/local/bin/alot
 end
 
-# mvim for writing
-function mvw
-	mvim -c "set textwidth=72" -c "set wrap" -c "set spell" -c "set nocp" $argv
+# alias vim to nvim
+function vim
+	nvim $argv
+end
+
+# alias v to vim/nvim
+function v
+	nvim $argv
 end
 
 # vim for writing
 function vw
-	vim -c "set textwidth=72" -c "set wrap" -c "set spell" -c "set nocp" $argv
+	nvim -c "set textwidth=72" -c "set wrap" -c "set spell" -c "set nocp" $argv
 end
 
-# vim for developing
+# vim for debug
 function vd
-	vim -c ":cf" -c ":copen"
+	nvim -c ":cf" -c ":copen"
 end
 
-## aliases
+# emacs console, not gui
+function em
+	emacs -nw
+end
+
+## make functions
 
 # make, with 2 threads per cpu
 function m
@@ -125,10 +129,31 @@ function m3
 	end
 end
 
+function mosh.quantum
+	mosh sh.deferred.io -p 60001:60005
+end
+
+function mosh.conch
+	mosh sh.deferred.io -p 60006:60010
+end
+
 ## exports
 
 # ccache
 export CCACHE_DIR=$HOME/.cache/ccache
+
+# linux armv7, amlogic S805 kernel hacking
+#export ARCH=arm
+#export CROSS_COMPILE="ccache /home/mturquette/tc/gcc-linaro-5.2-2015.11-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-"
+#export LOADADDR=0x00208000
+
+# linux armv8, amlogic S905 kernel hacking
+#export ARCH=arm64
+#export CROSS_COMPILE="ccache /home/mturquette/tc/gcc-linaro-5.3-2016.02-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+#export LOADADDR=0x01080000
+
+# android sdk dir used by gradle
+export ANDROID_HOME=$HOME/Library/Android/sdk
 
 # per-board environments
 

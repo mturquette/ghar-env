@@ -1,1 +1,1 @@
-/home/mturquette/.local/share/omf/themes/agnoster/fish_prompt.fish
+/Users/mturquette/.local/share/omf/themes/agnoster/fish_prompt.fish

@@ -1,12 +1,13 @@
 [user]
 	email = mturquette@deferred.io
 	name = Michael Turquette
+	signingkey = A23A9C9BC325A4D4!
 [color]
 	ui = auto
 [core]
-	editor = vim -c \"set textwidth=72\" -c \"set wrap\" -c \"set spell\" -c \"set nocp\"
 	abbrev = 12
 	preloadindex = true
+	editor = "NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim -c \"set textwidth=72\" -c \"set wrap\" -c \"set spell\" -c \"set nocp\""
 [push]
 	default = simple
 [sendemail]
@@ -16,3 +17,5 @@
 	fixes = Fixes: %h (\"%s\")
 [rebase]
 	autosquash = true
+#[gpg]
+#	program = gpg2
