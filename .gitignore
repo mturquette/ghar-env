@@ -5,3 +5,5 @@
 .ssh/id_rsa
 .ssh/korg-mturquette
 .ssh/authorized_keys
+.config/astroid/searches
+.config/fish/fishd.d*
