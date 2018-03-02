@@ -1,7 +1,15 @@
+# This is Git's per-user configuration file.
 [user]
 	email = mturquette@deferred.io
 	name = Michael Turquette
 	signingkey = A23A9C9BC325A4D4!
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[rebase]
+	autosquash = true
 [color]
 	ui = auto
 [core]
@@ -15,7 +23,5 @@
 	suppresscc = all
 [pretty]
 	fixes = Fixes: %h (\"%s\")
-[rebase]
-	autosquash = true
-#[gpg]
-#	program = gpg2
+[gpg]
+	program = gpg2
