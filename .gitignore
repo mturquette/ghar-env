@@ -1,4 +1,5 @@
 .vim/.netrwhist
+.vim/plugged
 *.swp
 .ssh/known_hosts
 .ssh/id_rsa
