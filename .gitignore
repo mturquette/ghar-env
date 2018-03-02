@@ -3,3 +3,4 @@
 .ssh/known_hosts
 .ssh/id_rsa
 .ssh/korg-mturquette
+.ssh/authorized_keys
