@@ -12,7 +12,7 @@ powerline-daemon
 # /usr/local/share/git-core/contrib/git-jump/git-jump
 
 ## path
-set -gx PATH $HOME/.local/bin $PATH $HOME/src/ghar/bin $HOME/src/gmailieer/
+set -gx PATH $HOME/.local/bin $PATH $HOME/src/ghar/bin $HOME/src/gmailieer/ $HOME/src/ghar/bin
 
 ## GPG and SSH agent configuration
 
